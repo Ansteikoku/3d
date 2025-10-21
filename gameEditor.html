@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ゲーム作成プラットフォーム</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+    <header>
+        <h1>ゲーム作成プラットフォーム</h1>
+    </header>
+
+    <div class="app">
+        <div class="editor">
+            <div class="game-editor">
+                <h2>ゲームエディタ</h2>
+                <button id="addObjectBtn">オブジェクトを追加</button>
+                <button id="add3DObjectBtn">3Dオブジェクトを追加</button> <!-- 3Dオブジェクト追加ボタン -->
+                <ul id="gameObjectsList"></ul>
+            </div>
+
+            <!-- スクリプトエディタ -->
+            <div class="script-editor">
+                <h2>スクリプトエディタ</h2>
+                <textarea id="scriptInput" placeholder="スクリプトを記述"></textarea>
+                <button id="runScriptBtn">スクリプト実行</button>
+            </div>
+
+            <!-- デバッグパネル -->
+            <div class="debug-panel">
+                <h2>デバッグパネル</h2>
+                <pre id="debugOutput">デバッグ情報がここに表示されます...</pre>
+            </div>
+        </div>
+
+        <button id="previewBtn">プレビュー</button>
+
+        <!-- プレビューパネル -->
+        <div id="previewArea" class="preview-area">
+            <h2>ゲームプレビュー</h2>
+            <div id="gamePreview" style="width: 100%; height: 500px;"></div> <!-- プレビューエリア -->
+        </div>
+    </div>
+
+    <script src="supabase.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
