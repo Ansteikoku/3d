@@ -1,72 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <title>Babylon.js Keyboard Movement</title>
-  <style>
-    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
-    canvas { width: 100%; height: 100%; display: block; }
-  </style>
-  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ゲーム作成プラットフォーム</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <canvas id="renderCanvas"></canvas>
-  <script>
-    const canvas = document.getElementById("renderCanvas");
-    const engine = new BABYLON.Engine(canvas, true);
 
-    const createScene = function () {
-      const scene = new BABYLON.Scene(engine);
+    <header>
+        <h1>ゲーム作成プラットフォーム</h1>
+    </header>
 
-      const camera = new BABYLON.ArcRotateCamera("camera", Math.PI / 2, Math.PI / 3, 20, new BABYLON.Vector3(0, 1, 0), scene);
-      camera.attachControl(canvas, true);
+    <div class="app">
+        <!-- ゲームエディタ -->
+        <div class="editor">
+            <div class="game-editor">
+                <h2>ゲームエディタ</h2>
+                <button id="addObjectBtn">オブジェクトを追加</button>
+                <ul id="gameObjectsList">
+                    <!-- ゲームオブジェクトのリスト -->
+                </ul>
+            </div>
 
-      const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+            <!-- スクリプトエディタ -->
+            <div class="script-editor">
+                <h2>スクリプトエディタ</h2>
+                <textarea id="scriptInput" placeholder="スクリプトを記述"></textarea>
+            </div>
 
-      const ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 20, height: 20}, scene);
+            <!-- デバッグパネル -->
+            <div class="debug-panel">
+                <h2>デバッグパネル</h2>
+                <pre id="debugOutput">デバッグ情報がここに表示されます...</pre>
+            </div>
+        </div>
 
-      const player = BABYLON.MeshBuilder.CreateSphere("player", {diameter: 2}, scene);
-      player.position.y = 1;
+        <!-- プレビューボタン -->
+        <button id="previewBtn">プレビュー</button>
 
-      // キーボード入力管理
-      const inputMap = {};
-      scene.actionManager = new BABYLON.ActionManager(scene);
+        <!-- プレビューパネル -->
+        <div id="previewArea" class="preview-area">
+            <h2>ゲームプレビュー</h2>
+            <iframe id="gamePreview" src="" frameborder="0"></iframe>
+        </div>
+    </div>
 
-      scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
-        BABYLON.ActionManager.OnKeyDownTrigger, function (evt) {
-          inputMap[evt.sourceEvent.key] = true;
-        }
-      ));
-
-      scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
-        BABYLON.ActionManager.OnKeyUpTrigger, function (evt) {
-          inputMap[evt.sourceEvent.key] = false;
-        }
-      ));
-
-      const speed = 0.1;
-
-      scene.onBeforeRenderObservable.add(() => {
-        if (inputMap["w"] || inputMap["ArrowUp"]) {
-          player.position.z -= speed;
-        }
-        if (inputMap["s"] || inputMap["ArrowDown"]) {
-          player.position.z += speed;
-        }
-        if (inputMap["a"] || inputMap["ArrowLeft"]) {
-          player.position.x -= speed;
-        }
-        if (inputMap["d"] || inputMap["ArrowRight"]) {
-          player.position.x += speed;
-        }
-      });
-
-      return scene;
-    };
-
-    const scene = createScene();
-    engine.runRenderLoop(() => scene.render());
-    window.addEventListener("resize", () => engine.resize());
-  </script>
+    <script src="script.js"></script>
 </body>
 </html>
