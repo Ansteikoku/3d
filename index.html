@@ -13,39 +13,52 @@
     </header>
 
     <div class="app">
-        <!-- ゲームエディタ -->
-        <div class="editor">
-            <div class="game-editor">
-                <h2>ゲームエディタ</h2>
-                <button id="addObjectBtn">オブジェクトを追加</button>
-                <ul id="gameObjectsList">
-                    <!-- ゲームオブジェクトのリスト -->
-                </ul>
-            </div>
-
-            <!-- スクリプトエディタ -->
-            <div class="script-editor">
-                <h2>スクリプトエディタ</h2>
-                <textarea id="scriptInput" placeholder="スクリプトを記述"></textarea>
-            </div>
-
-            <!-- デバッグパネル -->
-            <div class="debug-panel">
-                <h2>デバッグパネル</h2>
-                <pre id="debugOutput">デバッグ情報がここに表示されます...</pre>
-            </div>
+        <!-- ゲーム一覧 -->
+        <div class="game-list">
+            <h2>作成したゲーム一覧</h2>
+            <ul id="gamesList"></ul>
         </div>
 
-        <!-- プレビューボタン -->
-        <button id="previewBtn">プレビュー</button>
-
-        <!-- プレビューパネル -->
-        <div id="previewArea" class="preview-area">
-            <h2>ゲームプレビュー</h2>
-            <iframe id="gamePreview" src="" frameborder="0"></iframe>
-        </div>
+        <!-- 新規ゲーム作成ボタン -->
+        <button id="createNewGameBtn">新しいゲームを作成</button>
     </div>
 
-    <script src="script.js"></script>
+    <script src="supabase.js"></script>
+    <script>
+        // Supabaseからゲーム一覧を取得する関数
+        async function loadGames() {
+            const { data, error } = await supabase
+                .from('games')
+                .select('*');
+
+            if (error) {
+                console.error('エラーが発生しました:', error);
+                return;
+            }
+
+            // ゲーム一覧を表示
+            const gamesList = document.getElementById('gamesList');
+            gamesList.innerHTML = ''; // 既存のリストをクリア
+
+            data.forEach(game => {
+                const gameItem = document.createElement('li');
+                gameItem.innerHTML = `${game.name} <button onclick="loadGameEditor(${game.id})">編集</button>`;
+                gamesList.appendChild(gameItem);
+            });
+        }
+
+        // ゲームエディタに遷移する関数
+        function loadGameEditor(gameId) {
+            window.location.href = `gameEditor.html?gameId=${gameId}`;
+        }
+
+        // 新規ゲーム作成ボタンのイベント
+        document.getElementById('createNewGameBtn').addEventListener('click', function() {
+            window.location.href = 'gameEditor.html';  // 新規ゲーム作成画面に遷移
+        });
+
+        // ページ読み込み時にゲーム一覧を取得
+        loadGames();
+    </script>
 </body>
 </html>
